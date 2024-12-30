@@ -1,0 +1,3 @@
+- Q2 How many days each customer visited zomato?
+
+SELECT userid,count(DISTINCT created_date) FROM sales GROUP BY userid;
