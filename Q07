@@ -1,0 +1,9 @@
+--Q7 Which item customer just bought before becoming a member?
+
+SELECT* FROM
+(
+    SELECT c.*,rank() OVER(PARTITION BY userid ORDER BY created_date DESC) rnk FROM
+    (
+        SELECT a.userid,a.created_date,a.product_id,b.gold_signup_date FROM sales a INNER JOIN goldusers_signup b on a.userid=b.userid and created_date<=gold_signup_date
+    )
+    c)d WHERE rnk=1;
