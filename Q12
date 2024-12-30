@@ -1,0 +1,34 @@
+--Q12 Rank all the transcation for each member whenever they are a zomato gold member for every non gold member transaction marked as na.
+
+SELECT 
+    e.*, 
+    CASE 
+        WHEN rnk = 0 THEN 'na' 
+        ELSE rnk
+    END AS rnkk 
+FROM (
+    SELECT 
+        c.*, 
+        CAST(
+            CASE 
+                WHEN gold_signup_date IS NULL THEN 0 
+                ELSE RANK() OVER (PARTITION BY userid ORDER BY created_date DESC) 
+            END 
+            AS CHAR
+        ) AS rnk 
+    FROM (
+        SELECT 
+            a.userid, 
+            a.created_date, 
+            a.product_id, 
+            b.gold_signup_date 
+        FROM 
+            sales a 
+        LEFT JOIN 
+            goldusers_signup b 
+        ON 
+            a.userid = b.userid 
+            AND a.created_date > b.gold_signup_date
+    ) c
+) e;
+
