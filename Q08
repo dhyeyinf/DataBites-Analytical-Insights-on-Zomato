@@ -1,0 +1,6 @@
+--Q8 What is total orders and the amount spent for each member before they become a member?
+
+SELECT userid , count(created_date) order_purchase,sum(price) total_amt_spent from 
+(SELECT c.*,d.price FROM
+(SELECT a.userid,a.created_date,a.product_id,b.gold_signup_date from sales a INNER JOIN goldusers_signup b ON a.userid=b.userid and created_date<=gold_signup_date)c INNER JOIN product d on c.product_id=d.product_id
+)e GROUP BY userid;
