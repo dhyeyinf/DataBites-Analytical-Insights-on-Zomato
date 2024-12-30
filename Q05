@@ -1,0 +1,15 @@
+--Q5 Which item was most popular for each customer?
+
+SELECT * 
+FROM (
+    SELECT *, 
+           RANK() OVER (PARTITION BY userid ORDER BY cnt DESC) AS rnk 
+    FROM (
+        SELECT userid, 
+               product_id, 
+               COUNT(product_id) AS cnt 
+        FROM sales 
+        GROUP BY userid, product_id
+    ) AS derived_table
+) AS outer_table
+WHERE rnk = 1;
