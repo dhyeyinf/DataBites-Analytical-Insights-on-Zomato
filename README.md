@@ -30,4 +30,4 @@ The SQL scripts calculate and analyze:
 
    ```bash
    git clone https://github.com/dhyeyinf/DataBites-Analytical-Insights-on-Zomato.git
-   cd zomato-sales-analysis
+   cd DataBites-Analytical-Insights-on-Zomato
