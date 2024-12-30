@@ -1,0 +1,3 @@
+--Q11 Rank all the transaction of customer
+
+SELECT * , rank() over (PARTITION BY userid ORDER BY created_date) rnk from sales;
