@@ -1,0 +1,4 @@
+--Q3 What was the first product purchased by each customer?
+
+SELECT * FROM 
+(SELECT* , rank() over(PARTITION BY userid ORDER BY created_date) rnk from sales) a WHERE rnk=1;
