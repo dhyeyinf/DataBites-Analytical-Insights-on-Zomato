@@ -1,0 +1,90 @@
+--Q9 If buying each products generate points for eg 5rs=2 zomato points and each product has different purchasing points for example for p1: 5rs=1 zomato point , for p2: 10rs = 2 zomato points and for p3: 5rs = 1 zomato points  , calculate points collected by each customer and for which product most points have been given till now?
+
+
+SELECT 
+    userid, 
+    SUM(total_points) * 2.5 AS total_money_earned 
+FROM (
+    SELECT 
+        e.userid, 
+        e.product_id, 
+        e.amt / e.points AS total_points 
+    FROM (
+        SELECT 
+            d.userid, 
+            d.product_id, 
+            d.amt, 
+            CASE 
+                WHEN d.product_id = 1 THEN 5 
+                WHEN d.product_id = 2 THEN 2 
+                WHEN d.product_id = 3 THEN 5 
+                ELSE 0 
+            END AS points 
+        FROM (
+            SELECT 
+                c.userid, 
+                c.product_id, 
+                SUM(c.price) AS amt 
+            FROM (
+                SELECT 
+                    a.userid, 
+                    a.product_id, 
+                    b.price 
+                FROM 
+                    sales a 
+                INNER JOIN 
+                    product b 
+                ON 
+                    a.product_id = b.product_id
+            ) c 
+            GROUP BY 
+                c.userid, c.product_id
+        ) d
+    ) e
+) f 
+GROUP BY userid;
+
+
+
+SELECT 
+    product_id, 
+    SUM(total_points) * 2.5 AS total_money_earned 
+FROM (
+    SELECT 
+        e.userid, 
+        e.product_id, 
+        e.amt / e.points AS total_points 
+    FROM (
+        SELECT 
+            d.userid, 
+            d.product_id, 
+            d.amt, 
+            CASE 
+                WHEN d.product_id = 1 THEN 5 
+                WHEN d.product_id = 2 THEN 2 
+                WHEN d.product_id = 3 THEN 5 
+                ELSE 0 
+            END AS points 
+        FROM (
+            SELECT 
+                c.userid, 
+                c.product_id, 
+                SUM(c.price) AS amt 
+            FROM (
+                SELECT 
+                    a.userid, 
+                    a.product_id, 
+                    b.price 
+                FROM 
+                    sales a 
+                INNER JOIN 
+                    product b 
+                ON 
+                    a.product_id = b.product_id
+            ) c 
+            GROUP BY 
+                c.userid, c.product_id
+        ) d
+    ) e
+) f 
+GROUP BY product_id;
